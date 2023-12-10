@@ -42,10 +42,10 @@ class TestFileStorage(unittest.TestCase):
     def test_save_and_reload(self):
         """test the methods that saves to a json file"""
         model1 = BaseModel()
-        self.storage.new(model1)
-        saved = self.storage.save()
-        reloaded =self.storage.reload()
-        self.assertEqual(saved, reloaded)
+        (self.storage.new(model1))
+        self.storage.save()
+        self.storage.reload()
+        self.assertEqual(self.storage.save(), self.storage.reload())
 
 if __name__ == '__main__':
     unittest.main()
