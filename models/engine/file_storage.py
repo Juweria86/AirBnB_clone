@@ -3,12 +3,23 @@
 import json
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+"""from models.city import City"""
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
     """represents FileStorage class"""
     __file_path = "file.json"
     __objects = {}
+    
+    def access(self):
+        """this method will help us to access private class attr"""
+        path = FileStorage.__file_path
+        objects = FileStorage.__objects
+        return path, objects
 
     def all(self):
         """returns the dictionary __objects"""
@@ -20,6 +31,7 @@ class FileStorage:
         """
         class_name = obj.__class__.__name__
         FileStorage.__objects["{}.{}".format(class_name, obj.id)] = obj
+        return obj
 
     def save(self):
         """serializes __objects to the
@@ -28,6 +40,7 @@ class FileStorage:
         s_objects = {obj: s_objects[obj].to_dict() for obj in s_objects.keys()}
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(s_objects, file)
+            return s_objects
 
     def reload(self):
         """deserializes the JSON file to __objects"""
@@ -37,6 +50,7 @@ class FileStorage:
                 for objects in objdict.values():
                     cls_name = objects["__class__"]
                     del objects["__class__"]
-                    self.new(eval(cls_name)(**objects))
+                    reloaded = self.new(eval(cls_name)(**objects)
+
         except FileNotFoundError:
             return
